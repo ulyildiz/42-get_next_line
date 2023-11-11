@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/11 16:22:37 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:52:14 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	check_newline(char *str)
 	return ('0');
 }
 
-static char	*read_file(int fd, char *tmp, char *buffer, char *stack)
+static char	*read_file(int fd, char *tmp, char *buffer)
 {
 	int	i;		
 
@@ -39,17 +39,18 @@ static char	*read_file(int fd, char *tmp, char *buffer, char *stack)
     	if (i == -1)
 		{
         	free(buffer);
-        	return NULL;
+        	return (NULL);
         } 
 		else if (i == 0)
 			break ;
-        if (tmp) 
+        if (tmp)
     		tmp = ft_strjoin(tmp, buffer);
 		else
 			tmp = ft_strdup(buffer);
 		i = read(fd, buffer, BUFFER_SIZE);
 	}
-	tmp = ft_strjoin(tmp, buffer);
+	if (i > 0)
+		tmp = ft_strjoin(tmp, buffer);
 	free(buffer);
 	return (tmp);
 }
@@ -89,8 +90,8 @@ static char	*static_durability(char *tmp)
 char	*get_next_line(int fd)
 {
 	static char	*stack = NULL;
-	char	*buffer;
-	char	*line;
+	char	*buffer = NULL;
+	char	*line = NULL;
 	char	*tmp = NULL;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
@@ -99,7 +100,7 @@ char	*get_next_line(int fd)
 	if (buffer == NULL)
 		return (NULL);
 	buffer[BUFFER_SIZE] = '\0';
-	tmp = read_file(fd, tmp, buffer, stack);
+	tmp = read_file(fd, tmp, buffer);
 	if (tmp == NULL)
 		return (NULL);
 	line = read_durability(tmp, line);
@@ -121,8 +122,8 @@ int main()
 {
 	int fd = open("example.txt", O_RDONLY);
 	printf("*%s*", get_next_line(fd));
-	printf("*%s*", get_next_line(fd));
-	printf("*%s*", get_next_line(fd));
-	printf("*%s*", get_next_line(fd));
+//	printf("*%s*", get_next_line(fd));
+//	printf("*%s*", get_next_line(fd));
+	//printf("*%s*", get_next_line(fd));
 
 }
