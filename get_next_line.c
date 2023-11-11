@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 16:43:46 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/10 23:21:57 by ulyildiz         ###   ########.fr       */
+/*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
+/*   Updated: 2023/11/11 16:22:37 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,67 +16,113 @@
 #include <fcntl.h>
 #include "get_next_line.h"
 
-static char	*ft_read_line(int fd)
+static char	check_newline(char *str)
 {
-	int			i;
-	char	*rl;
-
-	rl = (char *)malloc(BUFFER_SIZE + 1);
-	if (rl == NULL)
-		return (NULL);
-	rl[BUFFER_SIZE] = '\0';
-	i = read(fd, rl, BUFFER_SIZE);
-	if (i == -1)
+	if (str == NULL)
+		return ('\0');
+	while (*str != '\0')
 	{
-		free(rl);
-		return (NULL);
+		if (*str == '\n')
+			return ('1');
+		str++;
 	}
-	else if (i == 0)
-		return (NULL);
-	return (rl);
+	return ('0');
 }
 
-static int	ft_catch_newline(char *line, char *wwn)
+static char	*read_file(int fd, char *tmp, char *buffer, char *stack)
+{
+	int	i;		
+
+	i = read(fd, buffer, BUFFER_SIZE);
+	while (check_newline(buffer) == '0')
+	{
+    	if (i == -1)
+		{
+        	free(buffer);
+        	return NULL;
+        } 
+		else if (i == 0)
+			break ;
+        if (tmp) 
+    		tmp = ft_strjoin(tmp, buffer);
+		else
+			tmp = ft_strdup(buffer);
+		i = read(fd, buffer, BUFFER_SIZE);
+	}
+	tmp = ft_strjoin(tmp, buffer);
+	free(buffer);
+	return (tmp);
+}
+
+static char	*read_durability(char *tmp, char *line)
 {
 	int	i;
 
 	i = 0;
-	wwn[BUFFER_SIZE] = '\0';
-	while (line[i] != '\n' && line[i] != '\0')
+	while (tmp[i] != '\0')
+		i++;
+	line = (char *)malloc(i + 1);
+	if (line == NULL)
+		return (NULL);
+	i = 0;
+	while (tmp[i] != '\n')
 	{
-		wwn[i] = line[i];
+		line[i] = tmp[i];
 		i++;
 	}
-	if (line[i] == '\n')
-		wwn[i] = '\n';
-	else if (line[i] == '\0')
-		wwn[i] = '\0';
-	free(line);
-	return (i);
+	line[i] = '\n';
+	line[i + 1] = '\0';
+	return (line);
+}
+
+static char	*static_durability(char *tmp)
+{
+	int	i;
+
+	i = 0;
+	while (tmp[i] != '\n')
+		i++;
+	i++;
+	return (tmp + i);
 }
 
 char	*get_next_line(int fd)
 {
+	static char	*stack = NULL;
+	char	*buffer;
 	char	*line;
-	char	*wwn;
-	
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	char	*tmp = NULL;
+
+	if (fd < 0 || BUFFER_SIZE < 1)
+		return (NULL);	
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if (buffer == NULL)
 		return (NULL);
-	line = (char *)malloc(BUFFER_SIZE + 1);
+	buffer[BUFFER_SIZE] = '\0';
+	tmp = read_file(fd, tmp, buffer, stack);
+	if (tmp == NULL)
+		return (NULL);
+	line = read_durability(tmp, line);
 	if (line == NULL)
 		return (NULL);
-	line = ft_read_line(fd);
-	if (line == NULL)
+	if (stack)
 	{
-		free(line);
-		return (NULL);
+		line = ft_strjoin(stack, line);
+		free(stack);
 	}
-	wwn = (char *)malloc(BUFFER_SIZE + 1);
-	if (wwn == NULL)
-	{
-		free(line);
+	stack = ft_strdup(static_durability(tmp));
+	if (stack == NULL)
 		return (NULL);
-	}		
-	ft_catch_newline(line, wwn);
-	return (wwn);
+	free(tmp);
+	return (line);
+}
+
+int main()
+{
+	int fd = open("example.txt", O_RDONLY);
+	printf("*%s*", get_next_line(fd));
+	printf("*%s*", get_next_line(fd));
+	printf("*%s*", get_next_line(fd));
+	printf("*%s*", get_next_line(fd));
+
 }
