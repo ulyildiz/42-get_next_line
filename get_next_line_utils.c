@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:43:50 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/11 16:22:12 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/11 19:22:59 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	j = ft_strlen(s2);
 	i = ft_strlen(s1);
-	s3 = (char *)malloc(i + j + 1);
+	s3 = (char *)calloc(i + j + 1, sizeof(char));
 	if (s3 == NULL)
 		return (NULL);
 	ft_memcpy(s3, s1, i);
@@ -67,7 +67,7 @@ char	*ft_strdup(const char *s1)
 	int		i;
 
 	i = 0;
-	s2 = (char *)malloc(ft_strlen(s1) + 1);
+	s2 = (char *)calloc(ft_strlen(s1) + 1, sizeof(char));
 	if (s2 == NULL)
 		return (NULL);
 	while (s1[i] != '\0')

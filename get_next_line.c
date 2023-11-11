@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/11 17:52:14 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/11 19:26:31 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ static char	*read_durability(char *tmp, char *line)
 	i = 0;
 	while (tmp[i] != '\0')
 		i++;
-	line = (char *)malloc(i + 1);
+	line = (char *)calloc(i + 1, sizeof(char));
 	if (line == NULL)
 		return (NULL);
 	i = 0;
-	while (tmp[i] != '\n')
+	while (tmp[i] != '\n' && tmp[i] != '\0')
 	{
 		line[i] = tmp[i];
 		i++;
@@ -81,7 +81,7 @@ static char	*static_durability(char *tmp)
 	int	i;
 
 	i = 0;
-	while (tmp[i] != '\n')
+	while (tmp[i] != '\n' && tmp[i] != '\0')
 		i++;
 	i++;
 	return (tmp + i);
@@ -96,7 +96,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);	
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	buffer = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (buffer == NULL)
 		return (NULL);
 	buffer[BUFFER_SIZE] = '\0';
@@ -122,7 +122,7 @@ int main()
 {
 	int fd = open("example.txt", O_RDONLY);
 	printf("*%s*", get_next_line(fd));
-//	printf("*%s*", get_next_line(fd));
+	printf("*%s*", get_next_line(fd));
 //	printf("*%s*", get_next_line(fd));
 	//printf("*%s*", get_next_line(fd));
 
