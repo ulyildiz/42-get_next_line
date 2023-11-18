@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:43:50 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/18 15:55:29 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/18 18:12:39 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		i;
 	int		j;
 
+	if (!(s1) || !(s2)) //??
+		return (NULL);
 	j = ft_strlen(s2);
 	i = ft_strlen(s1);
 	s3 = (char *)calloc(i + j + 1, sizeof(char));

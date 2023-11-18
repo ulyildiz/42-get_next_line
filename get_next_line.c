@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/18 17:41:14 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/18 18:22:27 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static char	*read_file(int fd, char *buffer)
 
 	flag = 1;
 	tmp = (char *)calloc(BUFFER_SIZE + 1, 1);
+	if (tmp == NULL)
+		return (NULL);
 	while (flag > 0)
 	{
 		flag = read(fd, tmp, BUFFER_SIZE);
@@ -74,27 +76,42 @@ static char	*read_durability(char *buffer)
 	}
 	if (buffer[i] == '\n')
 		line[i] = '\n';
-	line[i + 1] = '\0';
 	return (line);
 }
 
 static char	*static_durability(char *buffer)
 {
+	char	*newbuf;
+	int		i;
+
+	i = 0;
 	while (*buffer != '\n' && *buffer != '\0')
 		buffer++;
 	buffer++;
-	return (buffer);
+	while (buffer[i] != '\0')
+		i++;
+	newbuf = (char *)calloc(i + 1, 1);
+	if (newbuf == NULL)
+		return (NULL);
+	i = 0;
+	while (buffer[i] != '\0')
+	{
+		newbuf[i] = buffer[i];
+		i++;
+	}
+	free(buffer);
+	return (newbuf);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer; 
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	buffer = read_file(fd, buffer);
-	if (!buffer)
+	if (*buffer == '\0')
 		return (NULL);
 	line = read_durability(buffer);
 	/*if (line == NULL)
@@ -107,7 +124,7 @@ char	*get_next_line(int fd)
 	buffer = static_durability(buffer);
 	return (line);
 }
-/*
+
 int main()
 {
 	int fd = open("example.txt", O_RDONLY);
@@ -117,4 +134,3 @@ int main()
 	printf("*%s*", get_next_line(fd));
 	close(fd);
 }
-*/
