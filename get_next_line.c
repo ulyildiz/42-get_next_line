@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/18 18:22:27 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/18 18:36:38 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ static char	*read_file(int fd, char *buffer)
 			free(tmp);
 			return (NULL);
 		}
-		if (!buffer)
+		if (!(buffer))
 			buffer = ft_strdup(tmp);
 		else
 			buffer = ft_strjoin(buffer, tmp);
-		if (check_newline(tmp) == '1')
+		if (check_newline(tmp) == '1' || *(tmp + 1) == '\0') //??
 			break ;
 	}
 	free(tmp);
@@ -83,12 +83,15 @@ static char	*static_durability(char *buffer)
 {
 	char	*newbuf;
 	int		i;
+	int		j;
 
+	j = 0;
 	i = 0;
-	while (*buffer != '\n' && *buffer != '\0')
-		buffer++;
-	buffer++;
-	while (buffer[i] != '\0')
+	while (buffer[j] != '\n' && buffer[j] != '\0')
+		j++;
+	if (buffer[j] == '\n')
+		j++; //?
+	while (buffer[j + i] != '\0')
 		i++;
 	newbuf = (char *)calloc(i + 1, 1);
 	if (newbuf == NULL)
@@ -96,10 +99,10 @@ static char	*static_durability(char *buffer)
 	i = 0;
 	while (buffer[i] != '\0')
 	{
-		newbuf[i] = buffer[i];
+		newbuf[i] = buffer[j];
 		i++;
 	}
-	free(buffer);
+	free(buffer); //???
 	return (newbuf);
 }
 
