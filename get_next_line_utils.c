@@ -6,12 +6,11 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:43:50 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/11 19:22:59 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:55:29 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-
 
 static size_t	ft_strlen(const char *s)
 {

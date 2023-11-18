@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/11 20:43:56 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/18 17:41:14 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,102 +29,92 @@ static char	check_newline(char *str)
 	return ('0');
 }
 
-static char	*read_file(int fd, char *tmp, char *buffer)
+static char	*read_file(int fd, char *buffer)
 {
-	int	i;		
+	char	*tmp;
+	int		flag;		
 
-	i = read(fd, buffer, BUFFER_SIZE);
-	while (check_newline(buffer) == '0')
+	flag = 1;
+	tmp = (char *)calloc(BUFFER_SIZE + 1, 1);
+	while (flag > 0)
 	{
-    	if (i == -1)
+		flag = read(fd, tmp, BUFFER_SIZE);
+		if (flag == -1)
 		{
-        	free(buffer);
-        	return (NULL);
-        } 
-		else if (i == 0)
-			break ;
-        if (tmp)
-    		tmp = ft_strjoin(tmp, buffer);
+			free(tmp);
+			return (NULL);
+		}
+		if (!buffer)
+			buffer = ft_strdup(tmp);
 		else
-			tmp = ft_strdup(buffer);
-		i = read(fd, buffer, BUFFER_SIZE);
+			buffer = ft_strjoin(buffer, tmp);
+		if (check_newline(tmp) == '1')
+			break ;
 	}
-	if (i > 0)
-		tmp = ft_strjoin(tmp, buffer);
-	free(buffer);
-	return (tmp);
+	free(tmp);
+	return (buffer);
 }
 
-static char	*read_durability(char *tmp, char *line)
+static char	*read_durability(char *buffer)
 {
-	int	i;
+	char	*line;
+	int		i;
 
 	i = 0;
-	while (tmp[i] != '\0')
+	while (buffer[i] != '\n' && buffer[i] != '\0')
 		i++;
-	line = (char *)calloc(i + 1, sizeof(char));
+	line = (char *)calloc(i + 2, 1);
 	if (line == NULL)
 		return (NULL);
 	i = 0;
-	while (tmp[i] != '\n' || tmp[i] != '\0')
+	while (buffer[i] != '\n' && buffer[i] != '\0')
 	{
-		line[i] = tmp[i];
+		line[i] = buffer[i];
 		i++;
 	}
-	line[i] = '\n';
+	if (buffer[i] == '\n')
+		line[i] = '\n';
 	line[i + 1] = '\0';
 	return (line);
 }
 
-static char	*static_durability(char *tmp)
+static char	*static_durability(char *buffer)
 {
-	int	i;
-
-	i = 0;
-	while (tmp[i] != '\n' || tmp[i] != '\0')
-		i++;
-	i++;
-	return (tmp + i);
+	while (*buffer != '\n' && *buffer != '\0')
+		buffer++;
+	buffer++;
+	return (buffer);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*stack = NULL;
-	char	*buffer = NULL;
-	char	*line = NULL;
-	char	*tmp = NULL;
+	static char	*buffer;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
-		return (NULL);	
-	buffer = (char *)calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (buffer == NULL)
 		return (NULL);
-	buffer[BUFFER_SIZE] = '\0';
-	tmp = read_file(fd, tmp, buffer);
-	if (tmp == NULL)
+	buffer = read_file(fd, buffer);
+	if (!buffer)
 		return (NULL);
-	line = read_durability(tmp, line);
-	if (line == NULL)
+	line = read_durability(buffer);
+	/*if (line == NULL)
 		return (NULL);
-	if (stack)
-	{
-		line = ft_strjoin(stack, line);
-		free(stack);
-	}
-	stack = ft_strdup(static_durability(tmp));
-	if (stack == NULL)
+	*/
+	/*if (!(line))
+		return (NULL);*/
+	if (*line == '\0')
 		return (NULL);
-	free(tmp);
+	buffer = static_durability(buffer);
 	return (line);
 }
-
+/*
 int main()
 {
-	int fd = open("den", O_RDONLY);
+	int fd = open("example.txt", O_RDONLY);
+	printf("*%s*", get_next_line(fd));
+	printf("*%s*", get_next_line(fd));
 	printf("*%s*", get_next_line(fd));
 	printf("*%s*", get_next_line(fd));
 	close(fd);
-//	printf("*%s*", get_next_line(fd));
-	//printf("*%s*", get_next_line(fd));
-
 }
+*/
