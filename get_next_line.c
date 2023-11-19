@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/19 18:41:59 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/19 18:45:20 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ char	*get_next_line(int fd)
 	buffer = static_durability(buffer);
 	return (line);
 }
-
+/*
 int main()
 {
 	int fd = open("example.txt", O_RDONLY);
@@ -150,4 +150,4 @@ int main()
 //	printf("*%s*", get_next_line(fd));
 //	printf("*%s*", get_next_line(fd));
 	close(fd);
-}
+}*/
