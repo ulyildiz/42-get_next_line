@@ -6,17 +6,17 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:43:50 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/18 18:12:39 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/19 18:31:34 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-static size_t	ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
 	size_t	len;
 
-	if (!(s))
+	if (!s)
 		return (0);
 	len = 0;
 	while (s[len] != '\0')
@@ -24,58 +24,52 @@ static size_t	ft_strlen(const char *s)
 	return (len);
 }
 
-static void	*ft_memcpy(void *dst, const void *src, size_t n)
+void	*ft_calloc(size_t count, size_t nbyte)
 {
-	unsigned char	*dest;
-	unsigned char	*sourc;
-	size_t			i;
+	void	*allc;
+	size_t	i;
 
-	dest = (unsigned char *)dst;
-	sourc = (unsigned char *)src;
 	i = 0;
-	if (dest == NULL && sourc == NULL)
+	allc = malloc(count * nbyte);
+	if (!allc)
 		return (NULL);
-	while (i < n)
+	while (i < count * nbyte)
 	{
-		dest[i] = sourc[i];
+		((char *)allc)[i] = '\0';
 		i++;
 	}
-	return (dst);
+	return (allc);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*s3;
-	int		i;
-	int		j;
+	char		*s3;
+	size_t		i;
+	size_t		j;
 
-	if (!(s1) || !(s2)) //??
-		return (NULL);
-	j = ft_strlen(s2);
-	i = ft_strlen(s1);
-	s3 = (char *)calloc(i + j + 1, sizeof(char));
-	if (s3 == NULL)
-		return (NULL);
-	ft_memcpy(s3, s1, i);
-	ft_memcpy(s3 + i, s2, j);
-	s3[i + j] = '\0';
-	return (s3);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*s2;
-	int		i;
-
+	j = 0;
 	i = 0;
-	s2 = (char *)calloc(ft_strlen(s1) + 1, sizeof(char));
-	if (s2 == NULL)
+	s3 = (char *)ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
+	if (s3 == NULL)
 		return (NULL);
 	while (s1[i] != '\0')
 	{
-		s2[i] = s1[i];
+		s3[i] = s1[i];
 		i++;
 	}
-	s2[i] = '\0';
-	return (s2);
+	while (s2[j] != '\0')
+		s3[i++] = s2[j++];
+	return (s3);
+}
+char	*ft_strchr(const char *string, int searchedChar )
+{
+	char	*str;
+
+	str = (char *)string;
+	while (*str != searchedChar && *str != 0)
+		str++;
+	if (*str == searchedChar)
+		return (str);
+	else
+		return (NULL);
 }
