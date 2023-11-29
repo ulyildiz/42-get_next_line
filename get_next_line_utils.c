@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:43:50 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/29 10:34:50 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:24:50 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,20 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (*s2 != '\0')
 		s3[i++] = *(s2++);
 	return (s3);
+}
+
+int	check_newline(char *str)
+{
+	int		i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\n')
+			return (i + 1);
+		i++;
+	}
+	return (0);
 }

@@ -6,11 +6,10 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/29 11:01:59 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:24:27 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -30,22 +29,6 @@ static char	*dup_free(char *buffer, char *tmp)
 	temp = ft_strjoin(buffer, tmp);
 	free(buffer);
 	return (temp);
-}
-
-static int	check_newline(char *str)
-{
-	int		i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\n')
-			return (i + 1);
-		i++;
-	}
-	return (0);
 }
 
 static char	*read_file(int fd, char *buffer)
@@ -157,7 +140,7 @@ char	*get_next_line(int fd)
 /*
 int main()
 {
-	int fd = open("/Users/ulyildiz/francinette/tests/get_next_line/fsoares/one_line_no_nl.txt", O_RDONLY);
+	int fd = open("/Users/ulyildiz/francinette/tests/get_next_line/fsoares/giant_line.txt", O_RDONLY);
 	char *a;
 	a = get_next_line(fd);
 	printf("*%s*", a);
