@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/29 12:24:27 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/29 13:21:22 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static char	*dup_free(char *buffer, char *tmp)
 {
 	char	*temp;
 
-	temp = 0;
 	if (!buffer)
 	{
 		buffer = (char *)ft_calloc(1, 1);
@@ -37,7 +36,6 @@ static char	*read_file(int fd, char *buffer)
 	int		flag;		
 
 	flag = 1;
-	tmp = 0;
 	while (flag > 0 && 0 == check_newline(buffer))
 	{
 		tmp = (char *)ft_calloc(BUFFER_SIZE + 1, sizeof(char));
