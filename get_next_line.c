@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/25 10:42:04 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/29 11:01:59 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static char	*dup_free(char *buffer, char *tmp)
 {
 	char	*temp;
 
+	temp = 0;
 	if (!buffer)
 	{
 		buffer = (char *)ft_calloc(1, 1);
@@ -53,24 +54,29 @@ static char	*read_file(int fd, char *buffer)
 	int		flag;		
 
 	flag = 1;
+	tmp = 0;
 	while (flag > 0 && 0 == check_newline(buffer))
 	{
 		tmp = (char *)ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		if (tmp == NULL || !tmp)
+		if (!tmp)
+		{
+			if (buffer)
+			{
+				free(buffer);
+				buffer = NULL;
+			}
 			return (NULL);
+		}
 		flag = read(fd, tmp, BUFFER_SIZE);
 		if (flag == -1)
 		{
 			free(tmp);
-			free(buffer);
-			return (NULL);
+			return (free(buffer), buffer = NULL, NULL);
 		}
-		buffer = dup_free(buffer, tmp);
-		/*if (check_newline(tmp))
-		{
-			free(tmp);
-			break ;
-		}*/
+		if (flag > 0)
+			buffer = dup_free(buffer, tmp);
+		if (!buffer)
+			return (free(tmp), NULL);
 		free(tmp);
 	}
 	return (buffer);
@@ -81,7 +87,7 @@ static char	*read_durability(char *buffer)
 	char	*line;
 	int		linelen;
 
-	if (!buffer || buffer[0] == '\0' || buffer == NULL)
+	if (!buffer)
 		return (NULL);
 	linelen = check_newline(buffer);
 	if (linelen == 0)
@@ -101,30 +107,25 @@ static char	*read_durability(char *buffer)
 		line[linelen] = '\n';
 	return (line);
 }
-  
+
 static char	*static_durability(char *buffer)
 {
 	char	*newbuf;
-	size_t		i;
-	size_t		j;
+	size_t	i;
+	size_t	j;
 
 	j = 0;
 	i = 0;
-	while (buffer[j] != '\0' && buffer[j] != '\n')
+	newbuf = 0;
+	while (buffer[j] != '\0' && buffer[j] != '\n' && buffer)
 		j++;
-	if (buffer[j] == '\0')
-	{
-		free(buffer);
-		return (NULL);
-	}
+	if (!buffer || buffer[j] == '\0')
+		return (free(buffer), buffer = NULL, NULL);
 	newbuf = (char *)ft_calloc(ft_strlen(buffer) - (j++) + 1, sizeof(char));
-	if (!newbuf || newbuf == NULL)
-	{
-		free(buffer);
-		return (NULL);
-	}
+	if (!newbuf)
+		return (free(buffer), buffer = NULL, NULL);
 	i = 0;
-	while (buffer[j] != '\0') //?
+	while (buffer[j] != '\0')
 		newbuf[i++] = buffer[j++];
 	free(buffer);
 	return (newbuf);
@@ -132,7 +133,7 @@ static char	*static_durability(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer; 
+	static char	*buffer;
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
@@ -141,13 +142,22 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (NULL);
 	line = read_durability(buffer);
+	if (!line)
+	{
+		if (buffer)
+		{
+			free(buffer);
+			buffer = NULL;
+		}
+		return (NULL);
+	}
 	buffer = static_durability(buffer);
 	return (line);
 }
 /*
 int main()
 {
-	int fd = open("example.txt", O_RDONLY);
+	int fd = open("/Users/ulyildiz/francinette/tests/get_next_line/fsoares/one_line_no_nl.txt", O_RDONLY);
 	char *a;
 	a = get_next_line(fd);
 	printf("*%s*", a);

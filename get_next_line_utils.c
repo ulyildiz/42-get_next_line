@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:43:50 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/25 10:38:25 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/29 10:34:50 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ void	*ft_calloc(size_t count, size_t nbyte)
 	if (!allc)
 		return (NULL);
 	while (i < count * nbyte)
-	{
 		((char *)allc)[i++] = '\0';
-	}
 	return (allc);
 }
 
@@ -44,19 +42,16 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char		*s3;
 	size_t		i;
-	size_t		j;
 
-	j = 0;
 	i = 0;
+	if (!s1 || !s2)
+		return (NULL);
 	s3 = (char *)ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
 	if (!s3)
 		return (NULL);
-	while (s1[i] != '\0')
-	{
-		s3[i] = s1[i];
-		i++;
-	}
-	while (s2[j] != '\0')
-		s3[i++] = s2[j++];
+	while (*s1 != '\0')
+		s3[i++] = *(s1++);
+	while (*s2 != '\0')
+		s3[i++] = *(s2++);
 	return (s3);
 }
