@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/30 12:28:27 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:25:10 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static char	*read_durability(char *buffer)
 	if (!line)
 		return (NULL);
 	linelen = 0;
-	while (buffer[linelen] != '\n' && buffer[linelen])
+	while (buffer[linelen] != '\n' && buffer[linelen] != '\0')
 	{
 		line[linelen] = buffer[linelen];
 		linelen++;
@@ -126,24 +126,4 @@ char	*get_next_line(int fd)
 	}
 	buffer = static_durability(buffer);
 	return (line);
-}
-
-int main()
-{
-	int fd = open("/Users/ulyildiz/francinette/tests/get_next_line/gnlTester/files/43_with_nl", O_RDONLY);
-	char *a;
-	a = get_next_line(fd);
-	printf("*%s*", a);
-	free(a);
-	char *b;
-	b = get_next_line(fd);
-	printf("*%s*", b);
-	free(b);
-	char *c = get_next_line(fd);
-	printf("*%s*", c);
-	free(c);
-	char *d = get_next_line(fd);
-	printf("*%s*", d);
-	free(d);
-	close(fd);
 }

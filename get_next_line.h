@@ -6,14 +6,14 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:43:42 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/30 11:50:43 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:44:34 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 45
 # endif
 # include <stdlib.h>
 
