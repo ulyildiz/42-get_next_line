@@ -6,12 +6,11 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/30 13:25:10 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:49:51 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <stdio.h>
 #include <fcntl.h>
 #include "get_next_line.h"
 
@@ -98,7 +97,7 @@ static char	*static_durability(char *buffer)
 		j++;
 	if (buffer[j] == '\0')
 		return (free(buffer), buffer = NULL, NULL);
-	newbuf = (char *)ft_calloc(ft_strlen(buffer) - (j++) + 1, sizeof(char));
+	newbuf = (char *)ft_calloc(ft_strlen(buffer) - (++j) + 1, sizeof(char));
 	if (!newbuf)
 		return (free(buffer), buffer = NULL, NULL);
 	i = 0;
