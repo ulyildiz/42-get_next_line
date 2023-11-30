@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:43:50 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/30 12:34:45 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:54:34 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	*ft_calloc(size_t count, size_t nbyte)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char		*s3;
-	size_t		i;
+	char	*s3;
+	size_t	i;
 
 	if (!s1 || !s2)
 		return (NULL);
@@ -56,9 +56,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (s3);
 }
 
-int	check_newline(char *str)
+size_t	check_newline(char *str)
 {
-	int		i;
+	size_t	i;
 
 	if (!str)
 		return (0);
