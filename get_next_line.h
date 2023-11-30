@@ -6,15 +6,15 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:43:42 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/29 13:12:16 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/30 11:50:43 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 10
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 # include <stdlib.h>
 
 char	*get_next_line(int fd);

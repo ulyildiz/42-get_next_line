@@ -6,7 +6,7 @@
 /*   By: ulyildiz <ulyildiz@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 23:29:23 by ulyildiz          #+#    #+#             */
-/*   Updated: 2023/11/29 13:21:22 by ulyildiz         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:28:27 by ulyildiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ static char	*dup_free(char *buffer, char *tmp)
 			return (NULL);
 	}
 	temp = ft_strjoin(buffer, tmp);
-	free(buffer);
-	return (temp);
+	return (free(buffer), temp);
 }
 
 static char	*read_file(int fd, char *buffer)
@@ -36,28 +35,24 @@ static char	*read_file(int fd, char *buffer)
 	int		flag;		
 
 	flag = 1;
-	while (flag > 0 && 0 == check_newline(buffer))
+	while (flag > 0)
 	{
 		tmp = (char *)ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!tmp)
 		{
 			if (buffer)
-			{
-				free(buffer);
-				buffer = NULL;
-			}
+				return (free(buffer), buffer = NULL, NULL);
 			return (NULL);
 		}
 		flag = read(fd, tmp, BUFFER_SIZE);
 		if (flag == -1)
-		{
-			free(tmp);
-			return (free(buffer), buffer = NULL, NULL);
-		}
-		if (flag > 0)
+			return (free(tmp), free(buffer), buffer = NULL, NULL);
+		else if (flag > 0)
 			buffer = dup_free(buffer, tmp);
 		if (!buffer)
 			return (free(tmp), NULL);
+		if (check_newline(tmp) && flag > 0)
+			return (free(tmp), buffer);
 		free(tmp);
 	}
 	return (buffer);
@@ -76,7 +71,7 @@ static char	*read_durability(char *buffer)
 	if (linelen == 0)
 		return (NULL);
 	line = (char *)ft_calloc(linelen + 1, sizeof(char));
-	if (!line || line == NULL)
+	if (!line)
 		return (NULL);
 	linelen = 0;
 	while (buffer[linelen] != '\n' && buffer[linelen])
@@ -97,10 +92,11 @@ static char	*static_durability(char *buffer)
 
 	j = 0;
 	i = 0;
-	newbuf = 0;
+	if (!buffer)
+		return (NULL);
 	while (buffer[j] != '\0' && buffer[j] != '\n' && buffer)
 		j++;
-	if (!buffer || buffer[j] == '\0')
+	if (buffer[j] == '\0')
 		return (free(buffer), buffer = NULL, NULL);
 	newbuf = (char *)ft_calloc(ft_strlen(buffer) - (j++) + 1, sizeof(char));
 	if (!newbuf)
@@ -108,8 +104,7 @@ static char	*static_durability(char *buffer)
 	i = 0;
 	while (buffer[j] != '\0')
 		newbuf[i++] = buffer[j++];
-	free(buffer);
-	return (newbuf);
+	return (free(buffer), newbuf);
 }
 
 char	*get_next_line(int fd)
@@ -126,19 +121,16 @@ char	*get_next_line(int fd)
 	if (!line)
 	{
 		if (buffer)
-		{
-			free(buffer);
-			buffer = NULL;
-		}
+			return (free(buffer), buffer = NULL, NULL);
 		return (NULL);
 	}
 	buffer = static_durability(buffer);
 	return (line);
 }
-/*
+
 int main()
 {
-	int fd = open("/Users/ulyildiz/francinette/tests/get_next_line/fsoares/giant_line.txt", O_RDONLY);
+	int fd = open("/Users/ulyildiz/francinette/tests/get_next_line/gnlTester/files/43_with_nl", O_RDONLY);
 	char *a;
 	a = get_next_line(fd);
 	printf("*%s*", a);
@@ -155,4 +147,3 @@ int main()
 	free(d);
 	close(fd);
 }
-*/
