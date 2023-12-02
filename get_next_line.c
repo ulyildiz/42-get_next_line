@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <fcntl.h>
 #include "get_next_line.h"
 
 static char	*dup_free(char *buffer, char *tmp)
